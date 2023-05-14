@@ -73,7 +73,7 @@ time.sleep(50)
 # filename = max([download_folder + "\\" + f for f in os.listdir(download_folder)],key=os.path.getctime)
 # shutil.move(filename,os.path.join(download_folder,r"newPDFName.pdf"))
 
-with open('module 20.csv', mode='r') as file:
+with open('Lesson Total.csv', mode='r') as file:
     reader = csv.reader(file)
     pdfId = 0
     for row in reader:

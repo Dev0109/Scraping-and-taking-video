@@ -52,11 +52,13 @@ time.sleep(5)
 with open('Lesson Total.csv', mode='r') as file:
     reader = csv.reader(file)
     pdfId = 134
-    videonameIndex = -1
-    exitVal = 0
     for row in reader:
         link = row[2]
         print(link)
+        videonameIndex = 0
+        videoname = []
+        video_name = ''
+        exitVal = 0
         pdfIdString = str(math.floor(pdfId / 100)) + str(math.floor(pdfId / 10) % 10)  + str(pdfId % 10)
         pdfName = row[0] + '_' + pdfIdString + '_' + row[1] + '.pdf'
         pdfId = pdfId + 1
@@ -65,9 +67,10 @@ with open('Lesson Total.csv', mode='r') as file:
         videoNameClass = 'kl_message_heading'
         playBtnPath = '/html/body/div[1]/div[2]/a'
         paragraphs = driver.find_elements(By.XPATH, '//*[@id="wiki_page_show"]/div/p')
-        videoNames = driver.find_elements(By.XPATH, '//*[@id="wiki_page_show"]/div/div/h4/strong')
-        print("videonames: ", videoNames)
-        print("videonames type: ", type(videoNames))
+        videoNames = driver.find_elements(By.TAG_NAME, 'strong')
+        # videoNames = driver.find_elements(By.XPATH, '//*[@id="wiki_page_show"]/div/div/h4/strong')
+        # print("videonames: ", videoNames)
+        # print("videonames type: ", type(videoNames))
         nameIndex = 0
         videoNameString = []
         iframeindex = 0
@@ -75,32 +78,44 @@ with open('Lesson Total.csv', mode='r') as file:
             print("=========paragraphs==========")
             print("l==========>", l)
             time.sleep(1)
+            print(paragraphs[l])
             if len(paragraphs[l].find_elements(By.TAG_NAME, 'iframe')):
+                for x in range(0, len(videoNames)):
+                    videoname_filter = videoNames[x].text
+                    # print("videoname_filter", videoname_filter)
+                    if ("There" not in videoname_filter and "Video " in videoname_filter and videoname_filter not in videoname):
+                        videoname += [videoname_filter]
+                        print("videoname", videoname)
                 print(paragraphs[l].find_elements(By.TAG_NAME, 'iframe'))
                 print("=========iframe==========")
+                print(paragraphs[l])
                 driverIframe = paragraphs[l].find_element(By.TAG_NAME, 'iframe')
                 driver.switch_to.frame(driverIframe)
-                time.sleep(5)
+                time.sleep(2)
                 if len(driver.find_elements(By.XPATH, '//*[@id="kplayer_ifp"]')):
                     driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="kplayer_ifp"]'))
                     driver.find_element(By.XPATH, playBtnPath).click()
-                    time.sleep(5)  
+                    time.sleep(2)  
                     test = driver.execute_script("var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;")
+                    time.sleep(3)  
                     for item in test:
                         print("=========test==========")
                         if "https://cfvod.kaltura.com/scf/enc/hls/p" in item["name"] and exitVal == 0:
                             print("=========download==========")
-                            videonameIndex = videonameIndex + 1
                             print("x====>", videonameIndex)
+                            video_name_before = '{}.mp4'
+                            video__name = str(videoname[videonameIndex])
+                            video_name = video_name_before.format(video__name)
+                            print("video_name", video_name)
+                            print("video_name type", type(video_name))
+                            video_name = video_name.replace(':', '_')
+                            videonameIndex = videonameIndex + 1
                             print(item["name"])
                             originLink = '' + str(item['name'])
-                            videoLink = originLink.replace('scf/enc/hls', 'pd')     
-                            videoname_before = '3_{}.mp4'
-                            videoname = videoname_before.format(videonameIndex)
+                            videoLink = originLink.replace('scf/enc/hls', 'pd')
                             time.sleep(3)
                             response = requests.get(videoLink)   
-                            print("videoname", videoname)
-                            with open(videoname, 'wb') as f:
+                            with open(video_name, 'wb') as f:
                                 f.write(response.content)
                             exitVal = exitVal + 1
                         if exitVal == 1:

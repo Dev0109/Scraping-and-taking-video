@@ -1,7 +1,0 @@
-import requests
-
-url = 'https://cfvod.kaltura.com/pd/p/2384071/sp/238407100/serveFlavor/entryId/1_2n8jk1nh/v/1/ev/7/flavorId/1_fntuxk95/name/a.mp4/seg-1-v1-a1.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jZnZvZC5rYWx0dXJhLmNvbS9zY2YvZW5jL2hscy9wLzIzODQwNzEvc3AvMjM4NDA3MTAwL3NlcnZlRmxhdm9yL2VudHJ5SWQvMV8ybjhqazFuaC92LzEvZXYvNy9mbGF2b3JJZC8xX2ZudHV4azk1L25hbWUvYS5tcDQvKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTY4MzcxNjg4OH19fV19&Signature=Spftq7GggyOll-FBm1jIe~J4BAQgRw8Bie66lz8OgTkukCAyAqoY7m3DcqVSxAvvqjEYbpJKYLSkcESITlglokvwxWt9Mz40drcyvqo3aX4Uk1sn-7--izNXiS31LBzHc6wr3Hu4sIt70bAjvRfHec3cLuCThAMtN9csB~XDUL5MyJUIKli8oDbB-cOL7avkZUzAGhnWmfXon~poxbpiTRENQErCVgsVE6iTZqqY4a8aFhrlrogYjlH2io8d8xDHxN6eAH~-Yrwb8nJ0-zTcJWe3aNPyb-EUfzfKNkbzG~pN51kty0SYTKj1HKL1FPNzIJeIgE6o1tC39vyjNfCqcw__&Key-Pair-Id=APKAJT6QIWSKVYK3V34A'
-response = requests.get(url)
-
-with open('video.mp4', 'wb') as f:
-    f.write(response.content)
